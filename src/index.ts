@@ -3,34 +3,13 @@ import yaml from 'js-yaml';
 import ejs from 'ejs';
 import puppeteer from 'puppeteer';
 import { Command, Option } from 'commander';
-
-function chunk<T extends any[]>(arr: T, size: number) {
-  return arr.reduce(
-      (newarr, _, i) => (i % size ? newarr : [...newarr, arr.slice(i, i + size)]),
-      [] as T[][]
-  )
-}
-
-interface DocumentConfig {
-  title: string;
-  has_cover: boolean;
-}
-
-interface PageConfig {
-  type: string;
-  title: string|null;
-  repeat: number|null;
-}
+import { chunk } from './modules/utils'
+import './modules/config-parser'
 
 interface PageOutput {
   type: string;
-  title: string|null;
-  folio: number|string|null;
-}
-
-interface Config {
-  document: DocumentConfig;
-  contents: PageConfig[]
+  title: string | null;
+  folio: number | string | null;
 }
 
 const program = new Command();
