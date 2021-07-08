@@ -2,6 +2,7 @@ import fs from 'fs/promises';
 import yaml from 'js-yaml';
 import ejs from 'ejs';
 import puppeteer from 'puppeteer';
+import { Command, Option } from 'commander';
 
 function chunk<T extends any[]>(arr: T, size: number) {
   return arr.reduce(
@@ -32,8 +33,16 @@ interface Config {
   contents: PageConfig[]
 }
 
+const program = new Command();
+program
+  .option('-i, --input <file>', 'input yaml file', 'sample.yaml')
+  .option('-o, --output <file>', 'output file name', 'result.pdf')
+  .addOption(new Option('-f, --format <format>', 'file format').default('pdf').choices(['pdf', 'png']));
+program.parse(process.argv);
+const options = program.opts();
+
 (async() => {
-  const config = yaml.load(await fs.readFile('sample.yaml', 'utf8')) as Config;
+  const config = yaml.load(await fs.readFile(options.input, 'utf8')) as Config;
 
   let pages: PageOutput[] = [];
   const clearPage: PageOutput = {type: 'clear', title: null, folio: null}
@@ -74,16 +83,42 @@ interface Config {
     async: true
   })
 
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    defaultViewport: {
+      width: 800,
+      height: 100,
+      deviceScaleFactor: 1.5
+    }
+  });
   const page = await browser.newPage();
 
   // PDF出力対象ページ
   await page.setContent(template);
 
   // PDF作成処理
-  await page.pdf({
-    path: 'result.pdf',
-  });
+  switch(options.format) {
+    case 'pdf':
+      await page.pdf({
+        path: options.output,
+      });
+      break;
+    case 'png':
+      const bodyHandle = await page.$('body');
+      const boundingBox = await bodyHandle?.boundingBox();
+      await page.screenshot({
+        path: options.output,
+        clip: {
+          x: 0,
+          y: 0,
+          width: boundingBox?.width ?? 800,
+          height: boundingBox?.height ?? 600
+        },
+      })
+      break;
+    default:
+      break;
+  }
+
 
   browser.close();
   console.log('PDF出力完了');
