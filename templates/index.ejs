@@ -25,7 +25,7 @@
             gap: 8px;
         }
 
-        .pages {
+        .spread {
             display: flex;
             width: 100%;
             height: 100px;
@@ -51,7 +51,7 @@
             border-left: none;
         }
 
-        .page .nonble {
+        .page .folio {
             color:gray;
         }
     </style>
@@ -59,80 +59,20 @@
 <body>
     <h1 class="document title"><%= document_title %></h1>
     <div class="grid">
-        <div class="pages">
-            <div class="page clear"></div>
-            <div class="page">
-                <p>表紙</p>
-                <p class="nonble">表1</p>
+        <% spreads.forEach(function(spread){ %>
+            <div class="spread">
+                <% spread.pages.forEach(function(page){ %>
+                    <% if (page.type === 'clear') { %>
+                        <div class="page clear"></div>
+                    <% } else { %>
+                        <div class="page">
+                            <p><%= page.title %></p>
+                            <p class="folio"><%= page.folio %></p>
+                        </div>
+                    <% }%>
+                <% }); %>
             </div>
-        </div>
-        <div class="pages">
-            <div class="page">
-                <p></p>
-                <p class="nonble">表2</p>
-            </div>
-            <div class="page">
-                <p>中表紙</p>
-                <p class="nonble">1</p>
-            </div>
-        </div>
-        <div class="pages">
-            <div class="page">
-                <p>コンテンツ</p>
-                <p class="nonble">2</p>
-            </div>
-            <div class="page">
-                <p>コンテンツ</p>
-                <p class="nonble">3</p>
-            </div>
-        </div>
-        <div class="pages">
-            <div class="page">
-                <p>コンテンツ</p>
-                <p class="nonble">4</p>
-            </div>
-            <div class="page">
-                <p>コンテンツ</p>
-                <p class="nonble">5</p>
-            </div>
-        </div>
-        <div class="pages">
-            <div class="page">
-                <p>コンテンツ</p>
-                <p class="nonble">6</p>
-            </div>
-            <div class="page">
-                <p>コンテンツ</p>
-                <p class="nonble">7</p>
-            </div>
-        </div>
-        <div class="pages">
-            <div class="page">
-                <p>コンテンツ</p>
-                <p class="nonble">8</p>
-            </div>
-            <div class="page">
-                <p>コンテンツ</p>
-                <p class="nonble">9</p>
-            </div>
-        </div>
-        <div class="pages">
-            <div class="page">
-                <p>コンテンツ</p>
-                <p class="nonble">10</p>
-            </div>
-            <div class="page">
-                <p></p>
-                <p class="nonble">表3</p>
-            </div>
-        </div>
-        <div class="pages">
-            <div class="page">
-                <p>裏表紙</p>
-                <p class="nonble">表4</p>
-            </div>
-            <div class="page clear"></div>
-        </div>
+        <% }); %>
     </div>
 </body>
 </html>
