@@ -1,0 +1,14 @@
+document:
+  title: Document sample
+  has_cover: true
+contents:
+  - title: 表紙
+  - title: 表紙
+  - title: コンテンツ
+  - title: コンテンツ
+  - title: コンテンツ
+  - title: コンテンツ
+  - title: コンテンツ
+  - title: コンテンツ
+  - title: 裏表紙
+  - title: 裏表紙

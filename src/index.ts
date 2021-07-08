@@ -1,43 +1,48 @@
 import fs from 'fs/promises';
+import yaml from 'js-yaml';
 import ejs from 'ejs';
 import puppeteer from 'puppeteer';
 
-const spreads = [
-  {
-    pages: [
-      {type: 'clear'},
-      {title: '表紙', folio: '表1'},
-    ]
-  },
-  {
-    pages: [
-      {title: '表紙', folio: '表2'},
-      {title: 'コンテンツ', folio: '1'},
-    ]
-  },
-  {
-    pages: [
-      {title: 'コンテンツ', folio: '2'},
-      {title: 'コンテンツ', folio: '3'},
-    ]
-  },
-  {
-    pages: [
-      {title: 'コンテンツ', folio: '4'},
-      {title: '裏表紙', folio: '表3'},
-    ]
-  },
-  {
-    pages: [
-      {title: '裏表紙', folio: '表4'},
-      {type: 'clear'},
-    ]
-  },
-];
+function chunk<T extends any[]>(arr: T, size: number) {
+  return arr.reduce(
+      (newarr, _, i) => (i % size ? newarr : [...newarr, arr.slice(i, i + size)]),
+      [] as T[][]
+  )
+}
+
+interface DocumentConfig {
+  title: string;
+  has_cover: boolean;
+}
+
+interface PageConfig {
+  type: string;
+  title: string|null;
+  folio: string | number;
+}
+
+interface Config {
+  document: DocumentConfig;
+  contents: PageConfig[]
+}
 
 (async() => {
+  const config = yaml.load(await fs.readFile('sample.yaml', 'utf8')) as Config;
+
+  let pages: PageConfig[] = config.contents.map((page, index) => {
+    return {title: page.title, folio: index + 1, type: 'page'}
+  });
+  if (config.document.has_cover) {
+    const clearPage: PageConfig = {type: 'clear', title: null, folio: ''}
+    pages.unshift(clearPage);
+    pages.push(clearPage);
+  }
+  const spreads = chunk(pages, 2).map((pair: PageConfig) => {
+    return { pages: pair }
+  })
+
   const template = await ejs.renderFile('templates/index.ejs', {
-    document_title: 'My page plot',
+    document_title: config.document.title,
     spreads: spreads
   }, {
     async: true
