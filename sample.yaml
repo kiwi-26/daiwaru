@@ -3,12 +3,8 @@ document:
   has_cover: true
 contents:
   - title: 表紙
-  - title: 表紙
+    repeat: 2
   - title: コンテンツ
-  - title: コンテンツ
-  - title: コンテンツ
-  - title: コンテンツ
-  - title: コンテンツ
-  - title: コンテンツ
+    repeat: 12
   - title: 裏表紙
-  - title: 裏表紙
+    repeat: 2

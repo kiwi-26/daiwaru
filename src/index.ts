@@ -18,7 +18,13 @@ interface DocumentConfig {
 interface PageConfig {
   type: string;
   title: string|null;
-  folio: string | number;
+  repeat: number|null;
+}
+
+interface PageOutput {
+  type: string;
+  title: string|null;
+  folio: number|string|null;
 }
 
 interface Config {
@@ -29,12 +35,32 @@ interface Config {
 (async() => {
   const config = yaml.load(await fs.readFile('sample.yaml', 'utf8')) as Config;
 
-  let pages: PageConfig[] = config.contents.map((page, index) => {
-    return {title: page.title, folio: index + 1, type: 'page'}
+  let pages: PageOutput[] = [];
+  const clearPage: PageOutput = {type: 'clear', title: null, folio: null}
+  if (config.document.has_cover) {
+    pages.unshift(clearPage);
+  }
+  let index = 1;
+  config.contents.forEach((pageConfig) => {
+    if (pageConfig.repeat) {
+      for (let i = 0; i < pageConfig.repeat; i++) {
+        pages.push({
+          type: 'page',
+          title: pageConfig.title,
+          folio: index
+        });
+        index += 1;
+      }
+    } else {
+      pages.push({
+        type: 'page',
+        title: pageConfig.title,
+        folio: index
+      });
+      index += 1;
+    }
   });
   if (config.document.has_cover) {
-    const clearPage: PageConfig = {type: 'clear', title: null, folio: ''}
-    pages.unshift(clearPage);
     pages.push(clearPage);
   }
   const spreads = chunk(pages, 2).map((pair: PageConfig) => {
