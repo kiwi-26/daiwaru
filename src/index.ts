@@ -1,8 +1,13 @@
 import fs from 'fs/promises';
+import ejs from 'ejs';
 import puppeteer from 'puppeteer';
 
 (async() => {
-  const template = (await fs.readFile('templates/index.html')).toString();
+  const template = await ejs.renderFile('templates/index.ejs', {
+    document_title: 'My page plot'
+  }, {
+    async: true
+  })
 
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
