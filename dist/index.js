@@ -51,8 +51,8 @@ const options = program.opts();
     if (config.document.has_cover) {
         pages[0].folio = '表1';
         pages[1].folio = '表2';
-        pages[pages.length - 2].folio = '表4';
-        pages[pages.length - 1].folio = '表3';
+        pages[pages.length - 2].folio = '表3';
+        pages[pages.length - 1].folio = '表4';
         const clearPage = { type: 'clear', title: null, folio: null };
         pages.unshift(clearPage);
         pages.push(clearPage);
