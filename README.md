@@ -3,5 +3,5 @@
 ## usage
 ```sh
 npm install
-npm run dev
+node .
 ```
