@@ -2,7 +2,9 @@
   "name": "daiwaru",
   "version": "0.0.1",
   "description": "tool to create daiwari",
-  "main": "dist/index.js",
+  "bin": {
+    "daiwaru" :"dist/index.js"
+  },
   "scripts": {
     "dev": "ts-node src/index.ts",
     "build": "tsc",
