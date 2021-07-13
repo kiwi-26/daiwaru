@@ -34,7 +34,8 @@ const options = program.opts();
                 pages.push({
                     type: 'page',
                     title: pageConfig.title,
-                    folio: index
+                    folio: index,
+                    background: pageConfig.background
                 });
                 index += 1;
             }
@@ -43,7 +44,8 @@ const options = program.opts();
             pages.push({
                 type: 'page',
                 title: pageConfig.title,
-                folio: index
+                folio: index,
+                background: pageConfig.background
             });
             index += 1;
         }
@@ -53,7 +55,7 @@ const options = program.opts();
         pages[1].folio = '表2';
         pages[pages.length - 2].folio = '表3';
         pages[pages.length - 1].folio = '表4';
-        const clearPage = { type: 'clear', title: null, folio: null };
+        const clearPage = { type: 'clear', title: null, folio: null, background: null };
         pages.unshift(clearPage);
         pages.push(clearPage);
     }

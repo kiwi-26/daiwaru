@@ -6,5 +6,6 @@ contents:
     repeat: 2
   - title: コンテンツ
     repeat: 12
+    background: '#ffeeee'
   - title: 裏表紙
     repeat: 2

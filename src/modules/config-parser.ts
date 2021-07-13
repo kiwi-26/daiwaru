@@ -7,6 +7,7 @@ export interface PageConfig {
   type: string;
   title: string | null;
   repeat: number | null;
+  background: string | null;
 }
 
 export class Config {
