@@ -32,7 +32,7 @@
         }
 
         .page {
-            border: solid 1px #222;
+            border: solid 1px rgba(0, 0, 0, .9);
             padding: 4px;
             height: 100px;
             flex: 1 1;
@@ -52,7 +52,7 @@
         }
 
         .page .folio {
-            color: #ccc;
+            color: rgba(0, 0, 0, .5);
         }
     </style>
 </head>
@@ -65,7 +65,9 @@
                     <% if (page.type === 'clear') { %>
                         <div class="page clear"></div>
                     <% } else { %>
-                        <div class="page">
+                        <div class="page"
+                          <% if (page.background) { %>style="background:<%= page.background %>"<% } %>
+                        >
                             <p><%= page.title %></p>
                             <p class="folio"><%= page.folio %></p>
                         </div>
