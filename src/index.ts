@@ -77,6 +77,8 @@ const options = program.opts();
   // rendering template
   const template = await ejs.renderFile('templates/index.ejs', {
     document_title: config.document.title,
+    has_cover: config.document.has_cover,
+    page_length: pageTotal,
     spreads: spreads
   }, {
     async: true
