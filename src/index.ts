@@ -54,6 +54,11 @@ const options = program.opts();
     }
   });
 
+  const pageTotal = pages.length;
+  if (pageTotal % 2 == 1) {
+    throw new Error('ページ数が奇数になっています');
+  }
+
   if (config.document.has_cover) {
     pages[0].folio = '表1';
     pages[1].folio = '表2';
@@ -64,6 +69,7 @@ const options = program.opts();
     pages.unshift(clearPage);
     pages.push(clearPage);
   }
+
   const spreads = chunk(pages, 2).map((pair: PageOutput) => {
     return { pages: pair }
   });
