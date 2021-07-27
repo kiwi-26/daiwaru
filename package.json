@@ -1,6 +1,6 @@
 {
   "name": "daiwaru",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "tool to create daiwari",
   "main" :"dist/index.js",
   "bin": {

@@ -50,6 +50,10 @@ const options = program.opts();
             index += 1;
         }
     });
+    const pageTotal = pages.length;
+    if (pageTotal % 2 == 1) {
+        throw new Error('ページ数が奇数になっています');
+    }
     if (config.document.has_cover) {
         pages[0].folio = '表1';
         pages[1].folio = '表2';
@@ -65,6 +69,8 @@ const options = program.opts();
     // rendering template
     const template = await ejs_1.default.renderFile('templates/index.ejs', {
         document_title: config.document.title,
+        has_cover: config.document.has_cover,
+        page_length: pageTotal,
         spreads: spreads
     }, {
         async: true
